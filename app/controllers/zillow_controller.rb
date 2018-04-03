@@ -3,7 +3,7 @@ class ZillowController < ApplicationController
   end
 
   def demographics
-    zester = Zester::Client.new(ENV.fetch(:ZILLOW_KEY), 5)
+    zester = Zester::Client.new(ENV.fetch('ZILLOW_KEY'), 5)
 
     @data = zester.neighborhood.demographics(set_params).to_hash.deep_symbolize_keys
     @neighborhoods = zester.neighborhood.region_children(set_params.merge('childtype' => 'neighborhood')).to_hash.deep_symbolize_keys
