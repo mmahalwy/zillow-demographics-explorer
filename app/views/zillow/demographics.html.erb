@@ -1,0 +1,118 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <p>
+        <%= @data[:region] %>
+      </p>
+      <% @data[:charts][:chart].each do |chart| %>
+        <p>
+          <%= chart[:name].is_a?(Hash) ?  chart[:name][:_content_] : chart[:name] %>
+        </p>
+        <img src="<%= chart[:url] %>" alt="" class="img-fluid">
+        <% end %>
+
+          <% @data[:pages][:page].each do |page| %>
+            <h2>
+              <%= page[:name] %>
+            </h2>
+
+            <% if page.try(:[], :tables).try(:[], :table).is_a?(Array) %>
+              <% page.try(:[], :tables).try(:[], :table).each do |table| %>
+                <p>
+                  <%= table.try(:[], :name) %>
+                </p>
+                <table class="table table-bordered table-responsive">
+                  <thead>
+                    <tr>
+                      <% table[:data][:attribute].each do |attribute| %>
+                        <th>
+                          <%= attribute[:name] %>
+                        </th>
+                        <% end %>
+                    </tr>
+                  </thead>
+
+
+                  <tbody>
+                    <tr>
+                      <% table[:data][:attribute].each do |attribute| %>
+                        <td>
+                          <%= attribute_cell(attribute) %>
+                            (
+                            <%= attribute_cell(attribute, true) %>)
+                        </td>
+                        <% end %>
+                    </tr>
+                  </tbody>
+                </table>
+                <% end %>
+                  <% else %>
+                    <p>
+                      <% page.try(:[], :tables).try(:[], :table).try(:[], :name) %>
+                    </p>
+
+                    <table class="table table-bordered table-responsive">
+                      <thead>
+                        <tr>
+                          <% page[:tables][:table][:data][:attribute].each do |attribute| %>
+                            <th>
+                              <%= attribute[:name] %>
+                            </th>
+                            <% end %>
+                        </tr>
+                      </thead>
+
+
+                      <tbody>
+                        <tr>
+                          <% page[:tables][:table][:data][:attribute].each do |attribute| %>
+                            <td>
+                              <%= attribute_cell(attribute) %>
+                                (
+                                <%= attribute_cell(attribute, true) %>)
+                            </td>
+                            <% end %>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <% end %>
+                      <% end %>
+                        <h2>Neighborhoods</h2>
+                        <table class="table table-bordered">
+                          <tbody>
+                            <% @neighborhoods[:list][:region].each do |region| %>
+                              <tr>
+                                <td>
+                                  <%= region[:name] %>
+                                </td>
+                                <td>
+                                  <%= number_to_currency(region.try(:[], :zindex).try(:[], :_content_)) %>
+                                </td>
+                                <td>
+                                  <a href="<%= region.try(:[], :url) %>" target="_blank">Link</a>
+                                </td>
+                              </tr>
+                              <% end %>
+                          </tbody>
+                        </table>
+                        <h2>Zipcodes</h2>
+                        <table class="table table-bordered">
+                          <tbody>
+                            <% @zipcodes[:list][:region].each do |region| %>
+                              <tr>
+                                <td>
+                                  <%= region[:name] %>
+                                </td>
+                                <td>
+                                  <%= number_to_currency(region.try(:[], :zindex).try(:[], :_content_)) %>
+                                </td>
+                                <td>
+                                  <a href="<%= region.try(:[], :url) %>" target="_blank">Link</a>
+                                </td>
+                              </tr>
+                              <% end %>
+                          </tbody>
+                        </table>
+    </div>
+  </div>
+</div>
